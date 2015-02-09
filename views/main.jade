@@ -1,0 +1,34 @@
+doctype html
+html(lang="en")
+	head
+		block title
+			title= "VAKANTIE?!"
+
+		link(rel="stylesheet", href="/css/main.css")
+		script(src="https://code.jquery.com/jquery-1.11.2.min.js", defer)
+		script(src="js/main.js", defer)
+
+		meta(name="viewport", content="width=device-width, initial-scale = 1.0, maximum-scale = 1.0, user-scalable=no")
+		meta(http-equiv="X-UA-Compatible", content="IE=edge,chrome=1")
+		meta(name="mobile-web-app-capable", content="yes")
+		meta(name="apple-mobile-web-app-capable", content="yes")
+		meta(name="apple-mobile-web-app-status-bar-style", content="black")
+		meta(http-equiv="Content-Type", content="text/html; charset=utf-8")
+
+		meta(name="description", content="Gewoon lekker chill, lekker makkelijk zien wanneer je vakantie hebt. 1 2 en 3 enzo.")
+
+		script.
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+			ga('create', 'XXXXXX', 'auto');
+			ga('require', 'displayfeatures');
+			ga('send', 'pageview');
+
+	body
+		div.center
+			input(type="text", placeholder="plaatsnaam", id="location", autofocus, autocomplete="off")
+			div.output
+
+		a(href="https://plus.google.com/+LieuweRooijakkers", rel="publisher")

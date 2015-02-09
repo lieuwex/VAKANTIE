@@ -1,0 +1,53 @@
+html {
+	height: 100%;
+}
+
+body {
+	padding: 0;
+	font-family: "Helvetica", sans;
+
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+
+	background-color: #01FF70;
+	background: linear-gradient(30deg, #39CCCC, #01FF70);
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+}
+
+div.center {
+	width: 100%;
+	max-width: 800px;
+
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 23%;
+	transform: translateY(-50%);
+}
+
+input {
+	font-size: 4vw;
+	color: #fff !important;
+	text-align: center;
+	font-family: "Helvetica", sans;
+	font-weight: 100;
+
+	width: 100%;
+	outline: none;
+	border: none;
+	border-bottom: 2px #fff solid;
+	background-color: transparent;
+}
+
+input::-webkit-input-placeholder {
+	color: #fff;
+}
+
+div.output {
+	font-size: 4vw;
+	color: white;
+	margin-top: 25px;
+	text-align: center;
+
+	opacity: 0; /* Opacity gets 1 when we got a response. */
+}
