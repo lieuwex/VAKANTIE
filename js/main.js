@@ -6,6 +6,7 @@ function fetch () {
 		$("div.output")
 			.text(res)
 			.animate({ opacity: 1 });
+		$("input").blur();
 	};
 
 	$.get("/" + target, function (res) {
@@ -27,7 +28,6 @@ $(function () {
 	$("input").keydown(function (event) {
 		if (event.which !== 13) return;
 		localStorage["target"] = target = event.target.value;
-		$("input").blur();
 		fetch();
 	});
 
