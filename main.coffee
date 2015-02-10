@@ -54,6 +54,10 @@ app.get "/:location", (req, res) ->
 		res.status(404).end()
 		return
 
+	unless vacationData?
+		res.status(500).end()
+		return
+
 	location = null
 	if _.contains(north, req.params.location.toLowerCase()) then location = "noord"
 	else if _.contains(mid, req.params.location.toLowerCase()) then location = "midden"
