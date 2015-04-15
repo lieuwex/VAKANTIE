@@ -58,20 +58,25 @@ app.get "/:location", (req, res) ->
 		res.status(500).end()
 		return
 
+	city = req.params.location.toLowerCase()
 	location = null
-	if _.contains(north, req.params.location.toLowerCase()) then location = "noord"
-	else if _.contains(mid, req.params.location.toLowerCase()) then location = "midden"
-	else if _.contains(south, req.params.location.toLowerCase()) then location = "zuid"
+	if _.contains(north, city) then location = "noord"
+	else if _.contains(mid, city) then location = "midden"
+	else if _.contains(south, city) then location = "zuid"
 
-	m = moment _(vacationData).pluck("regions").flatten().find((d) ->
+	info = _(vacationData).pluck("regions").flatten().find((d) ->
 		correctRegion = d.region is location or d.region is "heel Nederland"
 		future = new Date(d.startdate) > new Date()
 		return correctRegion and future
-	).startdate
+	)
+
+	start = moment info.startdate
+	end = moment info.enddate
 
 	res.json
-		friendly: moment.duration(m.diff new Date).humanize()
-		date: m.format()
+		friendly: moment.duration(start.diff new Date).humanize()
+		startDate: start.format()
+		endDate: end.format()
 
 port = process.env.PORT || 5000
 app.listen port, -> console.log "Running on port #{port}"
