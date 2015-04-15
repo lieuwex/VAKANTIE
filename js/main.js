@@ -1,41 +1,33 @@
-var target, time;
+var target;
 
 function fetch () {
-	cb = function (res) {
-		time = res;
+	function set (res) {
 		$("div.output")
 			.text(res)
 			.animate({ opacity: 1 });
 		$("input").blur();
-	};
+	}
 
-	$.get("/" + target, function (res) {
-		cb("nog " + res + "...");
+	$.getJSON("/" + target, function (res) {
+		set("nog " + res.friendly + "...");
 	}).fail(function () {
-		cb("kadush");
+		set("kadush");
 	});
 }
 
 $(function () {
 	if ('localStorage' in window && window['localStorage'] != null) {
 		target = localStorage["target"];
-		if (target != null) {
+		if (target !== null) {
 			$("input").val(target);
 			fetch();
 		}
 	}
 
 	$("input").keydown(function (event) {
-		if (event.which !== 13) return;
-		localStorage["target"] = target = event.target.value;
-		fetch();
+		if (event.which === 13) {
+			localStorage["target"] = target = event.target.value;
+			fetch();
+		}
 	});
-
-	$("input")
-		.focus(function () {
-			$(this).animate({ opacity: 1 });
-		})
-		.blur(function () {
-			$(this).animate({ opacity: .6 });
-		});
 });

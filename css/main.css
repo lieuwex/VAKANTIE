@@ -9,7 +9,7 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 
-	background-color: #01FF70;
+	background-color: #20E2A4;
 	background: linear-gradient(30deg, #39CCCC, #01FF70);
 	background-repeat: no-repeat;
 	background-attachment: fixed;
@@ -32,6 +32,9 @@ input {
 	font-family: "Helvetica", sans;
 	font-weight: 100;
 
+	transition: .2s opacity linear;
+	opacity: .6;
+
 	width: 100%;
 	outline: none;
 	border: none;
@@ -41,6 +44,10 @@ input {
 
 input::-webkit-input-placeholder {
 	color: #fff;
+}
+
+input:focus {
+	opacity: 1;
 }
 
 div.output {

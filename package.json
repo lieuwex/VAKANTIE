@@ -9,13 +9,13 @@
   "author": "Lieuwe Rooijakkers <lieuwerooijakkers@gmail.com> (http://lieuwex.github.io/)",
   "license": "GPLv3",
   "dependencies": {
-    "coffee-script": "^1.9.0",
-    "compression": "^1.4.0",
-    "express": "^4.11.2",
-    "express-minify": "^0.1.2",
+    "coffee-script": "^1.9.2",
+    "compression": "^1.4.3",
+    "express": "^4.12.3",
+    "express-minify": "^0.1.3",
     "jade": "^1.9.2",
-    "lodash": "^3.1.0",
-    "moment": "^2.9.0",
-    "request": "^2.53.0"
+    "lodash": "^3.6.0",
+    "moment": "^2.10.2",
+    "request": "^2.55.0"
   }
 }

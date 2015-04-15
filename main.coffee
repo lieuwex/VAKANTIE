@@ -69,7 +69,9 @@ app.get "/:location", (req, res) ->
 		return correctRegion and future
 	).startdate
 
-	res.end moment.duration(m.diff new Date()).humanize()
+	res.json
+		friendly: moment.duration(m.diff new Date).humanize()
+		date: m.format()
 
 port = process.env.PORT || 5000
 app.listen port, -> console.log "Running on port #{port}"
