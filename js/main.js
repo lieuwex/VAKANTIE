@@ -10,8 +10,12 @@ function fetch () {
 
 	$.getJSON("/" + target, function (res) {
 		set("nog " + res.friendly + "...");
-	}).fail(function () {
-		set("kadush");
+	}).fail(function (obj) {
+		if (obj.status === 404) {
+			set('geen plaats met de naam "' + target + '" gevonden.')
+		} else {
+			set("kadush");
+		}
 	});
 }
 
