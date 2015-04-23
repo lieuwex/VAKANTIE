@@ -1,6 +1,13 @@
-var target;
+function setValue (target) {
+	localStorage["target"] = target;
 
-function fetch () {
+	if (target != null) {
+		$("input").val(target);
+		fetch(target);
+	}
+}
+
+function fetch (target) {
 	function set (res) {
 		$("div.output")
 			.text(res)
@@ -21,17 +28,13 @@ function fetch () {
 
 $(function () {
 	if ('localStorage' in window && window['localStorage'] != null) {
-		target = localStorage["target"];
-		if (target !== null) {
-			$("input").val(target);
-			fetch();
-		}
+		var target = localStorage["target"];
+		setValue(target);
 	}
 
 	$("input").keydown(function (event) {
 		if (event.which === 13) {
-			localStorage["target"] = target = event.target.value;
-			fetch();
+			setValue(event.target.value);
 		}
 	});
 });
