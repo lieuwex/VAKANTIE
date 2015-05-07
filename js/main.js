@@ -11,7 +11,7 @@ function fetch (target) {
 	function set (res) {
 		$("div.output")
 			.text(res)
-			.animate({ opacity: 1 });
+			.addClass("visible");
 		$("input").blur();
 	}
 

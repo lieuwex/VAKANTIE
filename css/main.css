@@ -55,6 +55,15 @@ div.output {
 	color: white;
 	margin-top: 25px;
 	text-align: center;
+	transition: .2s opacity linear;
 
 	opacity: 0; /* Opacity gets 1 when we got a response. */
+}
+
+div.output.visible {
+	opacity: 1;
+}
+
+input:focus ~ div.output {
+	opacity: .6;
 }
