@@ -59,11 +59,13 @@ app.get "/:location", (req, res) ->
 		res.status(500).end()
 		return
 
-	city = req.params.location.toLowerCase()
+	city = req.params.location.toLowerCase().replace /\W/g, ""
+	check = (val) -> val.replace(/\W/g, "").toLowerCase() is city
+
 	location = null
-	if _.contains(north, city) then location = "noord"
-	else if _.contains(mid, city) then location = "midden"
-	else if _.contains(south, city) then location = "zuid"
+	if _.any(north, check) then location = "noord"
+	else if _.any(mid, check) then location = "midden"
+	else if _.any(south, check) then location = "zuid"
 
 	info = _(vacationData).pluck("regions").flatten().find((d) ->
 		correctRegion = d.region is location or d.region is "heel Nederland"
