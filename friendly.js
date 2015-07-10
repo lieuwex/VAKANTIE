@@ -52,9 +52,9 @@ module.exports = function (duration) {
 			return s + " en ongeveer " + weeks(leftWeeks % 4) + ".";
 		}
 	} else {
-		if (leftDays % 7 === 0) {
+		if (~~leftDays % 7 === 0) {
 			return weeks(leftWeeks) + ".";
-		} else if (leftDays >= 7) {
+		} else if (leftDays > 7) {
 			return weeks(leftWeeks) + " en " + days(leftDays % 7) + ".";
 		} else {
 			return days(leftDays % 7) + ".";
