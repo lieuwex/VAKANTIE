@@ -51,7 +51,9 @@ app.get "/", (req, res) ->
 	res.render "main"
 
 app.get "/:location", (req, res) ->
-	unless _.contains north.concat(mid).concat(south), req.params.location.toLowerCase()
+	city = req.params.location.toLowerCase().replace /\W/g, ''
+
+	unless city in [north..., mid..., south...]
 		res.status(404).end()
 		return
 
@@ -59,7 +61,6 @@ app.get "/:location", (req, res) ->
 		res.status(500).end()
 		return
 
-	city = req.params.location.toLowerCase().replace /\W/g, ""
 	check = (val) -> val.replace(/\W/g, "").toLowerCase() is city
 
 	location = null
