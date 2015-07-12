@@ -20,6 +20,8 @@ function fetch (target) {
 	}).fail(function (obj) {
 		if (obj.status === 404) {
 			set('geen plaats met de naam "' + target + '" gevonden.')
+		} else if (obj.status === 420) {
+			set('geen vakantie gevonden voor "' + target + '".');
 		} else {
 			set("kadush");
 		}

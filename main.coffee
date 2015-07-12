@@ -73,6 +73,10 @@ app.get "/:location", (req, res) ->
 		return correctRegion and future
 	)
 
+	unless info?
+		res.status(420).end()
+		return
+
 	start = moment info.startdate
 	end = moment info.enddate
 
