@@ -1,38 +1,37 @@
-_ = require "lodash"
-express = require "express"
-compress = require "compression"
-minify = require "express-minify"
-request = require "request"
-moment = require "moment"
-friendly = require "./friendly.js"
+_        = require 'lodash'
+express  = require 'express'
+compress = require 'compression'
+minify   = require 'express-minify'
+request  = require 'request'
+moment   = require 'moment'
+friendly = require './friendly.js'
 
-north = require "./json/north.json"
-mid = require "./json/mid.json"
-south = require "./json/south.json"
+north    = require './json/north.json'
+mid      = require './json/mid.json'
+south    = require './json/south.json'
 
 app = express()
-app.set "view engine", "jade"
-moment.locale "nl"
+app.set 'view engine', 'jade'
+moment.locale 'nl'
 
 app.use compress filter: -> yes # Compress EVERYTHING
 app.use minify()
-app.use express.static __dirname + "/public"
-app.use "/js", express.static __dirname + "/js"
-app.use "/css", express.static __dirname + "/css"
+app.use express.static __dirname + '/public'
+app.use '/js', express.static __dirname + '/js'
+app.use '/css', express.static __dirname + '/css'
 
 app.use (req, res, next) ->
-	res.header "Access-Control-Allow-Origin", "*"
-	res.header "Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"
+	res.header 'Access-Control-Allow-Origin', '*'
+	res.header 'Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept'
 	next()
 
 onError = (err, req, res, next) ->
 	console.log err.stack
-	res.status(500).end "dat 500 tho."
+	res.status(500).end 'dat 500 tho.'
 app.use onError
 
 vacationData = []
 fetchVacationData = ->
-	firstYear = lastYear = null
 	currentYear = new Date().getUTCFullYear()
 
 	if new Date().getMonth() >= 7 # first half schoolyear.
@@ -43,14 +42,14 @@ fetchVacationData = ->
 		lastYear = currentYear
 
 	request "http://opendata.rijksoverheid.nl/v1/sources/rijksoverheid/infotypes/schoolholidays/schoolyear/#{firstYear}-#{lastYear}?output=json&rows=2", (req, res, body) ->
-		try
-			vacationData = JSON.parse(body).content[0].vacations
-fetchVacationData(); setInterval fetchVacationData, 43200000
+		try vacationData = JSON.parse(body).content[0].vacations
 
-app.get "/", (req, res) ->
-	res.render "main"
+fetchVacationData(); setInterval fetchVacationData, 12 * 60 * 60 * 1000 # 12h
 
-app.get "/:location", (req, res) ->
+app.get '/', (req, res) ->
+	res.render 'main'
+
+app.get '/:location', (req, res) ->
 	city = req.params.location.toLowerCase().replace /\W/g, ''
 
 	unless city in [north..., mid..., south...]
@@ -61,18 +60,19 @@ app.get "/:location", (req, res) ->
 		res.status(500).end()
 		return
 
-	check = (val) -> val.replace(/\W/g, "").toLowerCase() is city
+	check = (val) -> val.replace(/\W/g, '').toLowerCase() is city
+	if _.any(north, check) then location = 'noord'
+	else if _.any(mid, check) then location = 'midden'
+	else if _.any(south, check) then location = 'zuid'
 
-	location = null
-	if _.any(north, check) then location = "noord"
-	else if _.any(mid, check) then location = "midden"
-	else if _.any(south, check) then location = "zuid"
+	info = _(vacationData)
+		.pluck 'regions'
+		.flatten()
+		.find (d) ->
+			correctRegion = d.region is location or d.region is 'heel Nederland'
+			future = new Date(d.startdate) > new Date()
 
-	info = _(vacationData).pluck("regions").flatten().find((d) ->
-		correctRegion = d.region is location or d.region is "heel Nederland"
-		future = new Date(d.startdate) > new Date()
-		return correctRegion and future
-	)
+			correctRegion and future
 
 	unless info?
 		res.status(420).end()
@@ -82,7 +82,7 @@ app.get "/:location", (req, res) ->
 	end = moment info.enddate
 
 	res.json
-		friendly: friendly moment.duration start.diff new Date
+		friendly: friendly moment.duration start.diff(new Date)
 		startDate: start.format()
 		endDate: end.format()
 
