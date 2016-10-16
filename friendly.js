@@ -37,7 +37,7 @@ module.exports = function (duration) {
 	var leftMonths = duration.asMonths();
 
 	if (leftMonths > 2) {
-		return "ongeveer " + months(leftMonths) + ".";
+		return "ongeveer " + months(leftMonths);
 	} else if (leftMonths > 1) {
 		var s = months(leftMonths);
 		var leftWeeks = leftWeeks % 4;
@@ -47,17 +47,17 @@ module.exports = function (duration) {
 		} else if (~~leftWeeks === 0) {
 			return "ongeveer " + s;
 		} else if (leftWeeks%1 === 0) {
-			return s + " en " + weeks(leftWeeks % 4) + ".";
+			return s + " en " + weeks(leftWeeks % 4);
 		} else {
-			return s + " en ongeveer " + weeks(leftWeeks % 4) + ".";
+			return s + " en ongeveer " + weeks(leftWeeks % 4);
 		}
 	} else {
 		if (~~leftDays % 7 === 0) {
-			return weeks(leftWeeks) + ".";
+			return weeks(leftWeeks);
 		} else if (leftDays > 7) {
-			return weeks(leftWeeks) + " en " + days(leftDays % 7) + ".";
+			return weeks(leftWeeks) + " en " + days(leftDays % 7);
 		} else {
-			return days(leftDays % 7) + ".";
+			return days(leftDays % 7);
 		}
 	}
 };
