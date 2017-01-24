@@ -25,10 +25,9 @@ app.use (req, res, next) ->
 	res.header 'Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept'
 	next()
 
-onError = (err, req, res, next) ->
+app.use (err, req, res, next) ->
 	console.log err.stack
 	res.status(500).end 'dat 500 tho.'
-app.use onError
 
 vacationData = []
 fetchVacationData = ->
@@ -42,9 +41,11 @@ fetchVacationData = ->
 		lastYear = currentYear
 
 	request "http://opendata.rijksoverheid.nl/v1/sources/rijksoverheid/infotypes/schoolholidays/schoolyear/#{firstYear}-#{lastYear}?output=json&rows=2", (req, res, body) ->
-		try vacationData = JSON.parse(body).content[0].vacations
+		try
+			parsed = JSON.parse body
+			vacationData = parsed.content[0].vacations
 
-fetchVacationData(); setInterval fetchVacationData, 12 * 60 * 60 * 1000 # 12h
+fetchVacationData(); setInterval fetchVacationData, 1000 * 60 * 60 * 12 # 12h
 
 app.get '/', (req, res) ->
 	res.render 'main'
@@ -52,7 +53,7 @@ app.get '/', (req, res) ->
 app.get '/:location', (req, res) ->
 	city = req.params.location.toLowerCase().replace /\W/g, ''
 
-	unless city in [north..., mid..., south...]
+	unless _.some([ north, mid, south ], (a) -> _.includes a, city)
 		res.status(404).end()
 		return
 
@@ -60,10 +61,16 @@ app.get '/:location', (req, res) ->
 		res.status(500).end()
 		return
 
-	check = (val) -> val.replace(/\W/g, '').toLowerCase() is city
-	if _.some(north, check) then location = 'noord'
-	else if _.some(mid, check) then location = 'midden'
-	else if _.some(south, check) then location = 'zuid'
+	location = (
+		check = (val) -> val.replace(/\W/g, '').toLowerCase() is city
+
+		if _.some north, check
+			'noord'
+		else if _.some mid, check
+			'midden'
+		else if _.some south, check
+			'zuid'
+	)
 
 	info = _(vacationData)
 		.map 'regions'
@@ -86,5 +93,5 @@ app.get '/:location', (req, res) ->
 		startDate: start.format()
 		endDate: end.format()
 
-port = process.env.PORT || 5000
+port = process.env.PORT or 5000
 app.listen port, -> console.log "Running on port #{port}"
