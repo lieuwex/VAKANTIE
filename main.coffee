@@ -51,18 +51,15 @@ app.get '/', (req, res) ->
 	res.render 'main'
 
 app.get '/:location', (req, res) ->
-	city = req.params.location.toLowerCase().replace /\W/g, ''
-
-	unless _.some([ north, mid, south ], (a) -> _.includes a, city)
-		res.status(404).end()
-		return
-
 	unless vacationData?
 		res.status(500).end()
 		return
 
+	clean = (str) -> str.toLowerCase().replace /\W/g, ''
+
+	city = clean req.params.location
 	location = (
-		check = (val) -> val.replace(/\W/g, '').toLowerCase() is city
+		check = (val) -> clean(val) is city
 
 		if _.some north, check
 			'noord'
@@ -71,6 +68,10 @@ app.get '/:location', (req, res) ->
 		else if _.some south, check
 			'zuid'
 	)
+
+	unless location?
+		res.status(404).end()
+		return
 
 	info = _(vacationData)
 		.map 'regions'
