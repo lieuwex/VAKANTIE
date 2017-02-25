@@ -94,5 +94,5 @@ app.get '/:location', (req, res) ->
 		startDate: start.format()
 		endDate: end.format()
 
-port = process.env.PORT or 5000
+port = process.env.PORT ? 5000
 app.listen port, -> console.log "Running on port #{port}"
